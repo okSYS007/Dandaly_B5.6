@@ -1,0 +1,79 @@
+#
+#
+#КРЕСТИКИ - НОЛИКИ
+
+Play = True
+Player = True
+TurnsCount = 0
+
+#обозначим координаты хода + поле
+coords = [' ',0, 1, 2]
+field = [['-','-','-'],
+         ['-','-','-'],
+         ['-','-','-']]
+
+def print_field():
+    for i in range(len(coords)):
+        print(coords[i], end = ' ')
+    print()
+
+    for i in range(len(field)):
+        print(coords[i+1], end = ' ')
+        for j in range(len(field[i])):
+            print(field[i][j], end=' ')
+        print()
+
+def check_game():
+
+    #победа по горизонтали
+    #победа по вертикали
+    #победа по диагонали
+    if ((field[0][0] == field[0][1] == field[0][2] != '-' or field[1][0] == field[1][1] == field[1][2] != '-' or field[2][0] == field[2][1] == field[2][2] != '-')
+        or (field[0][0] == field[1][0] == field[2][0] != '-' or field[0][1] == field[1][1] == field[2][1] != '-' or field[0][2] == field[1][2] == field[2][2] != '-')
+        or (field[0][0] == field[1][1] == field[2][2] != '-' or field[0][2] == field[1][1] == field[2][0] != '-')):
+        print_field()
+        print("Game over")
+        return False
+    #ничья
+    elif TurnsCount >= 9:
+        print_field()
+        print("Tie")
+        return False
+    else:
+        print_field()
+        return True
+
+print_field()
+
+#Ход игрока7
+while Play:
+    if Player:
+        move_ = input('Игрок X, Введите координаты через пробел : ').split()
+    else:
+        move_ = input('Игрок 0, Введите координаты через пробел : ').split()
+
+    index_i = int(move_[0])
+    index_j = int(move_[1])
+    #проверим правильность хода
+    if any([index_i<0, index_j<0,
+           index_i>2, index_j>2]):
+        #print_field()
+        print("Не верный ход")
+        continue
+    if field[int(move_[0])][int(move_[1])] != '-':
+        print("Сюда уже ходили")
+        print_field()
+        continue
+
+    #Ход
+    if Player:
+        field[int(move_[0])][int(move_[1])] = 'X'
+        Player = False
+        TurnsCount += 1
+    else:
+        field[int(move_[0])][int(move_[1])] = '0'
+        Player = True
+        TurnsCount += 1
+
+    #проверка победы
+    Play = check_game()
